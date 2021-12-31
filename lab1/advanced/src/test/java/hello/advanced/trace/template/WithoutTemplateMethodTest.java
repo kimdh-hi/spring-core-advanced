@@ -7,45 +7,39 @@ import org.junit.jupiter.api.Test;
 public class WithoutTemplateMethodTest {
 
     public class TestA {
-        public void logic1() {
+        public void logic() throws InterruptedException {
             log.info("start");
             long start = System.currentTimeMillis();
 
-            log.info("logic1 processing ...");
-            sleep(500);
+            log.info("TestA logic1 processing ...");
+            Thread.sleep(500);
 
             long end = System.currentTimeMillis();
             long spendTime = end - start;
             log.info("end, time = {}", spendTime);
         }
+    }
 
-        public void logic2() {
+    public class TestB {
+        public void logic() throws InterruptedException {
             log.info("start");
             long start = System.currentTimeMillis();
 
-            log.info("logic2 processing ...");
-            sleep(500);
+            log.info("TestB logic processing ...");
+            Thread.sleep(500);
 
             long end = System.currentTimeMillis();
             long spendTime = end - start;
             log.info("end, time = {}", spendTime);
         }
-
-        private void sleep(int millis) {
-            try {
-                Thread.sleep(millis);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
     }
 
     @Test
-    void test() {
+    void test() throws InterruptedException {
         TestA testA = new TestA();
+        TestB testB = new TestB();
 
-        testA.logic1();
-        testA.logic2();
+        testA.logic();
+        testB.logic();
     }
 }

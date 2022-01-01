@@ -12,7 +12,6 @@ public class WithoutTemplateMethodTest {
             long start = System.currentTimeMillis();
 
             log.info("TestA logic1 processing ...");
-            Thread.sleep(500);
 
             long end = System.currentTimeMillis();
             long spendTime = end - start;
@@ -26,7 +25,6 @@ public class WithoutTemplateMethodTest {
             long start = System.currentTimeMillis();
 
             log.info("TestB logic processing ...");
-            Thread.sleep(500);
 
             long end = System.currentTimeMillis();
             long spendTime = end - start;

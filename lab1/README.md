@@ -30,15 +30,15 @@
 @GetMapping("/v4/request")
 public String request(String itemId) {
 
-        AbstractTemplate<String> template = new AbstractTemplate<>(trace) {
-@Override
-protected String call() {
-        orderService.orderItem(itemId);
-        return "ok";
-        }
-        };
-        return template.execute("OrderController.request");
-        }
+    AbstractTemplate<String> template = new AbstractTemplate<>(trace) {
+    @Override
+    protected String call() {
+          orderService.orderItem(itemId);
+              return "ok";
+          }
+    };
+    return template.execute("OrderController.request");
+}
 ```
 
 #### v5 - 콜백 템플릿 적용
@@ -48,9 +48,9 @@ protected String call() {
 @GetMapping("/v5/request")
 public String request(String itemId) {
 
-        return template.execute("OrderController.request", () -> {
+    return template.execute("OrderController.request", () -> {
         orderService.orderItem(itemId);
         return "ok";
-        });
-        }
+    });
+}
 ```

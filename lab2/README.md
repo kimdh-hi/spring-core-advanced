@@ -81,3 +81,36 @@ Object proxy = proxyFactory.getProxy(); // 프록시 생성
 
 <br>
 
+## 빈 후처리기 BeanPostProcessor
+- 컴포넌트 스캔에 의해 등록되는 빈에 대해서는 프록시를 적용할 수 없었다.
+- 등록되는 모든 빈에 대해서 조작이 가능한 `BeanPostProcessor`를 이용해서 컴포넌트 스캔에 의해 등록되는 빈에도 프록시를 적용한다.
+- `BeanPostProcessor` 인터페이스를 구현하면 스프링 컨테이너에 등록될 빈 객체와 빈의 이름을 받는 메서드를 오버라이딩 할 수 있다.
+```java
+@Nullable
+default Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+    return bean;
+}
+
+default Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+    return bean;
+}
+```
+- `bean`이 프록시 적용 대상이라면 `ProxyFactory`를 이용해서 프록시를 생성하고 생성된 프록시를 리턴한다.
+```java
+public class PackageLogTracePostProcessor implements BeanPostProcessor {
+
+   private final Advisor advisor;
+
+    public PackageLogTracePostProcessor(String basePackage, Advisor advisor) {
+        this.advisor = advisor;
+    }
+
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        ProxyFactory proxyFactory = new ProxyFactory(bean);
+        proxyFactory.addAdvisor(advisor);
+        return proxyFactory.getProxy();
+    }
+}
+```
+- 구현한 `BeanPostProcessor`를 스프링 컨테이너에 올려주면 등록되는 모든 빈에 대해서 적용 가능하다.

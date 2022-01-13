@@ -1,9 +1,6 @@
 package hello.proxy.config;
 
-import hello.proxy.app.v1.OrderControllerV1;
-import hello.proxy.app.v1.OrderControllerV1Impl;
-import hello.proxy.app.v1.OrderRepositoryV1Impl;
-import hello.proxy.app.v1.OrderServiceV1Impl;
+import hello.proxy.app.v1.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,12 +13,12 @@ public class AppV1Config {
     }
 
     @Bean
-    public OrderServiceV1Impl orderServiceV1() {
+    public OrderServiceV1 orderServiceV1() {
         return new OrderServiceV1Impl(orderRepositoryV1());
     }
 
     @Bean
-    public OrderRepositoryV1Impl orderRepositoryV1() {
+    public OrderRepositoryV1 orderRepositoryV1() {
         return new OrderRepositoryV1Impl();
     }
 }

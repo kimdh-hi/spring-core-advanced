@@ -117,3 +117,30 @@ public class PackageLogTracePostProcessor implements BeanPostProcessor {
 - Springboot가 올리는 빈에도 모두 적용되기 때문에 특정 패키지나 클래스로 적용범위를 제한하고 사용해야 한다.
 
 ++ 이전에는 프록시를 적용하고자 하는 Bean마다 설정 클래스에서 실제객체 대신 프록시를 반환하도록 설정해줘야 했다. 이제는 프록시를 생성하는 부분을 설정클래스가 아닌 빈후처리기에 맡기므로 설정클래스에 프록시 생성을 위한 반복되는 코드가 사라졌다.
+
+<br>
+
+## AnnotationAwareAspectJAutoProxyCreator 자동 프록시 생성기
+- 빈 후처리기를 직접 만들어서 Bean으로 등록함으로 컴포넌트 스캔 대상 클래스에도 프록시를 적용할 수 있게 되었다.
+- 빈 후처리기는 생성되는 모든 Bean에 적용되기 때문에 명시적으로 제한을 해줘야 한다. 예제의 경우 패키지로 범위를 제한했다.
+- 이는 조금 중복된 작업이 될 수 있다. 빈 후처리기에서 프록시를 생성할 때 `Advisor` 를 생성하는데 여기에는 `Pointcut`과 `Advice`가 포함된다. 사실 이 두 객체만 있다면 이 빈 후처리기가 어디에 적용되어 대신 프록시를 생성하고 반환하며 어떤 기능을 수행할 지 알 수 있다.
+- Spring 은 이 작업을 자동으로 제공한다. Bean으로 등록된 `Advisor`에 해당하는 프록시를 자동으로 만들어준다. 
+
+의존성 추가
+```groovy
+implementation 'org.springframework.boot:spring-boot-starter-aop'
+```
+Advisor 등록
+```java
+/**
+ * Advisor의 Pointcut을 기반으로 프록시 생성 여부를 판단하고 프록시를 생성해서 등록한다.
+ */
+@Bean
+public Advisor advisor1(LogTrace logTrace) {
+    NameMatchMethodPointcut pointcut = new NameMatchMethodPointcut();
+    pointcut.setMappedNames("request*", "order*", "orderItem*");
+
+    LogTraceAdvice advice = new LogTraceAdvice(logTrace);
+    return new DefaultPointcutAdvisor(pointcut, advice);
+}
+```

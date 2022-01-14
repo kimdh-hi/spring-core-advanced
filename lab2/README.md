@@ -114,3 +114,6 @@ public class PackageLogTracePostProcessor implements BeanPostProcessor {
 }
 ```
 - 구현한 `BeanPostProcessor`를 스프링 컨테이너에 올려주면 등록되는 모든 빈에 대해서 적용 가능하다.
+- Springboot가 올리는 빈에도 모두 적용되기 때문에 특정 패키지나 클래스로 적용범위를 제한하고 사용해야 한다.
+
+++ 이전에는 프록시를 적용하고자 하는 Bean마다 설정 클래스에서 실제객체 대신 프록시를 반환하도록 설정해줘야 했다. 이제는 프록시를 생성하는 부분을 설정클래스가 아닌 빈후처리기에 맡기므로 설정클래스에 프록시 생성을 위한 반복되는 코드가 사라졌다.

@@ -18,7 +18,6 @@ public class PackageLogTracePostProcessor implements BeanPostProcessor {
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-
         String packageName = bean.getClass().getPackageName();
         if (!packageName.startsWith(basePackage)) return bean;
 

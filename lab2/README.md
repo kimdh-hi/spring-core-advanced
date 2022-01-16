@@ -144,3 +144,28 @@ public Advisor advisor1(LogTrace logTrace) {
     return new DefaultPointcutAdvisor(pointcut, advice);
 }
 ```
+
+<br>
+
+## @Aspect AOP 적용
+- 이전까지 직접 정의한 `Pointcut`과 `Advice`로 `Advisor`를 만들어서 Bean으로 등록하는 것으로 프록시 생성을 처리했다.
+- 이제 실무에서 사용하는 어노테이션 기반 방법을 적용해보자. (`@Aspect`)
+- `@Aspect` 를 클래스 레벨에 붙여준다.
+  - 프록시 자동 생성기(빈 후처리기)는 `@Aspect`를 찾고 해당 클래스의 포인트컷, 어드바이스 정보로 어드바이저를 생성하고 Bean으로 등록한다.
+- `@Aspect` 가 붙은 클래스에서 포인트컷과 어드바이스에 대한 정의를 한다.
+```java
+@Aspect // 프록시 자동 생성기(빈 후처리기)는 @Aspect 를 찾고 이를 토대로 Advisor를 생성 및 빈 등록 기능을 한다.
+public class LogTraceAspect {
+    
+  @Around("execution(* hello.proxy.app..*(..))") // 포인트컷
+  public Object execute(ProceedingJoinPoint joinPoint) throws Throwable {
+    // ==== Advice 로직 ==== // 
+
+    // .... 프록시 부가기능 .... //  
+    Object result = joinPoint.proceed(); // 실제객체 호출
+    // .... 프록시 부가기능 .... //  
+
+    return result;
+  }
+}
+```

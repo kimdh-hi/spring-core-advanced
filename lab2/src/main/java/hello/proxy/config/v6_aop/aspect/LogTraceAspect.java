@@ -10,7 +10,7 @@ import org.aspectj.lang.annotation.Aspect;
 import java.lang.reflect.Method;
 
 @Slf4j
-@Aspect
+@Aspect // 프록시 자동 생성기(빈 후처리기)는 @Aspect 를 찾고 이를 토대로 Advisor를 생성 및 빈 등록 기능을 한다.
 public class LogTraceAspect {
 
     private final LogTrace logTrace;

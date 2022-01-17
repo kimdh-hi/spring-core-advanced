@@ -4,6 +4,8 @@ import hello.aop.order.OrderRepository;
 import hello.aop.order.OrderService;
 import hello.aop.order.aop.AspectV1;
 import hello.aop.order.aop.AspectV2;
+import hello.aop.order.aop.AspectV3;
+import hello.aop.order.aop.AspectV5;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,7 +15,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
 //@Import({AspectV1.class})
-@Import({AspectV2.class})
+//@Import({AspectV2.class})
+//@Import({AspectV3.class})
+//@Import({AspectV4.class})
+@Import({AspectV5.LogAspect.class, AspectV5.TxAspect.class})
 @Slf4j
 @SpringBootTest
 public class AopTest {

@@ -11,6 +11,7 @@ public class AspectV6 {
     @Before(value = "hello.aop.order.aop.Pointcuts.orderAndService()")
     public void doBefore(JoinPoint joinPoint) {
         log.info("doBefore {}", joinPoint.getSignature());
+        // 자동으로 다음 타겟을 호출한다.
     }
 
     @AfterReturning(value = "hello.aop.order.aop.Pointcuts.orderAndService()", returning = "result")

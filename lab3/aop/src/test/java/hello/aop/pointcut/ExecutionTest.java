@@ -91,4 +91,64 @@ public class ExecutionTest {
         pointcut.setExpression("execution(* hello.aop..*.*(..))");
         assertThat(pointcut.matches(method, MemberServiceImpl.class)).isTrue();
     }
+
+    /**
+     * 부모타입으로 매칭
+     */
+    @Test
+    void typeMatchSuperType() {
+        pointcut.setExpression("execution(* hello.aop.member.MemberService.*(..))");
+        assertThat(pointcut.matches(method, MemberServiceImpl.class)).isTrue();
+    }
+
+    /**
+     * 부모타입으로 매칭 실패 테스트
+     * 부모타입에 있는 메서드만 매칭에 성공
+     */
+    @Test
+    void typeMatchSuperTypeFailureTest() throws NoSuchMethodException {
+        Method testMethod = MemberServiceImpl.class.getMethod("internal", String.class);
+        pointcut.setExpression("execution(* hello.aop.member.MemberService.*(..))");
+        assertThat(pointcut.matches(testMethod, MemberServiceImpl.class)).isFalse();
+    }
+
+    /**
+     * 파라미터 매칭
+     * 모든 Jointpoint 중 String타입 파라미터 하나를 받는 메서드에 매칭
+     */
+    @Test
+    void parameterMatching() {
+        pointcut.setExpression("execution(* *(String))");
+        assertThat(pointcut.matches(method, MemberServiceImpl.class)).isTrue();
+    }
+
+    /**
+     * 파라미터 매칭
+     * 모든 Joinpoint 중 파라미터를 받지 않는 메서드에 매칭
+     */
+    @Test
+    void noParameterMatching() {
+        pointcut.setExpression("execution(* *())");
+        assertThat(pointcut.matches(method, MemberServiceImpl.class)).isFalse();
+    }
+
+    /**
+     * 파라미터 매칭
+     * 타입에 관계없이 하나의 파라미터를 받는 메서드에 매칭
+     */
+    @Test
+    void onlyOneParameterMatching() {
+        pointcut.setExpression("execution(* *(*))");
+        assertThat(pointcut.matches(method, MemberServiceImpl.class)).isTrue();
+    }
+
+    /**
+     * 파라미터 매칭
+     * 첫 번째 파라미터의 타입은 강제하고 뒤에 오는 파라미터의 타입과 개수에 관계없이 매칭
+     */
+    @Test
+    void parameterMatchingComplex() {
+        pointcut.setExpression("execution(* *(String, ..))");
+        assertThat(pointcut.matches(method, MemberServiceImpl.class)).isTrue();
+    }
 }

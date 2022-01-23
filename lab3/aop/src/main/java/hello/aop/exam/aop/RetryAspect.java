@@ -18,6 +18,9 @@ public class RetryAspect {
         Exception exceptionHolder = null;
 
         for (int retryCnt=1; retryCnt<=maxRetry; retryCnt++) { // 재시도
+            if (retryCnt > 1) {
+                log.info("{} 번째 재시도", retryCnt-1);
+            }
             try {
                 return joinPoint.proceed(); // target 호출시 예외가 없다면 그대로 반환
             } catch (Exception e) {

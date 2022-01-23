@@ -1,24 +1,25 @@
 package hello.aop.exam;
 
-import hello.aop.exam.annotation.Retry;
 import hello.aop.exam.aop.RetryAspect;
-import hello.aop.exam.aop.TraceAspect;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
-@Import({TraceAspect.class, RetryAspect.class})
+@Import(RetryAspect.class)
+@Slf4j
 @SpringBootTest
-public class ExamTest {
+public class RetryTest {
 
     @Autowired
-    ExamService service;
+    ExamRepository examRepository;
 
     @Test
     void test() {
-        for (int i=0;i<5;i++) {
-           service.request("data" + i);
+        for (int i=1;i<=5;i++) {
+            String result = examRepository.save(String.valueOf(i));
+            log.info("result={}, itemId={}", result, i);
         }
     }
 }

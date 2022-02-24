@@ -21,7 +21,7 @@ public class AutoProxyConfig {
     /**
      * Advisor의 Pointcut을 기반으로 프록시 생성 여부를 판단하고 프록시를 생성해서 등록한다.
      */
-    //@Bean
+//    @Bean
     public Advisor advisor1(LogTrace logTrace) {
         NameMatchMethodPointcut pointcut = new NameMatchMethodPointcut();
         pointcut.setMappedNames("request*", "order*", "orderItem*");
@@ -34,8 +34,8 @@ public class AutoProxyConfig {
     public Advisor advisor2(LogTrace logTrace) {
         AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
         pointcut.setExpression("execution(* hello.proxy.app..*(..))");
-        LogTraceAdvice advice = new LogTraceAdvice(logTrace);
 
+        LogTraceAdvice advice = new LogTraceAdvice(logTrace);
         return new DefaultPointcutAdvisor(pointcut, advice);
     }
 

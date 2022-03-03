@@ -5,10 +5,11 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-public class InternalServiceV3 {
+public class InternalCallService {
 
     public void internal() {
         log.info("called internal!!");
     }
 
 }
+
